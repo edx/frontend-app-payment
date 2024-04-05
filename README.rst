@@ -5,6 +5,8 @@ frontend-app-payment
 
 Please tag **@edx/revenue-squad** on any PRs or issues.  Thanks.
 
+This repo is intended for the use of 2U employees.
+
 Introduction
 ------------
 
