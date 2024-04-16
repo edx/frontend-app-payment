@@ -52,7 +52,7 @@ class Checkout extends React.Component {
     const skus = [];
 
     for (const product of products){
-      skus.push(product.sku)
+      skus.push(product.sku);
     }
     localStorage.setItem('skus', JSON.stringify(skus));
   };
