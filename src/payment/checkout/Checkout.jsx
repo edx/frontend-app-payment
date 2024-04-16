@@ -48,10 +48,12 @@ class Checkout extends React.Component {
 
     this.props.submitPayment({ method: 'paypal' });
 
+    // eslint-disable-next-line react/prop-types
     const { products } = this.props;
     const skus = [];
 
-    for (const product of products){
+    // eslint-disable-next-line no-restricted-syntax
+    for (const product of products) {
       skus.push(product.sku);
     }
     localStorage.setItem('skus', JSON.stringify(skus));
