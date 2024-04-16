@@ -36,9 +36,6 @@ const basket = (state = basketInitialState, action = null) => {
       };
 
       case BASKET_DATA_RECEIVED:
-        if (action.payload.products && action.payload.products.length > 0) {
-          localStorage.setItem('sku', action.payload.products[0].sku);
-        }
         return { ...state, ...action.payload };
 
       case BASKET_PROCESSING: return {

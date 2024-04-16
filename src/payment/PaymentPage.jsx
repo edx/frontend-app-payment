@@ -43,13 +43,25 @@ class PaymentPage extends React.Component {
   }
 
   componentDidMount() {
-    const sku = localStorage.getItem('sku');
+    const rawSkus = localStorage.getItem('skus');
+    const skus = JSON.parse(rawSkus);
 
     // Check if SKU is not null
-    if (sku !== null) {
-      const paymentPage = `${getConfig().ECOMMERCE_BASE_URL}/basket/add/?sku=${sku}`;
+    if (skus !== null) {
+      const baseURL = getConfig().ECOMMERCE_BASE_URL;
+
+      // Constructing the URL with the sku parameters
+      let paymentPage = `${baseURL}/basket/add/?`;
+      // Appending each sku value to the URL
+      Object.values(skus).forEach(sku => { paymentPage += `sku=${sku}&`; });
+      // for (const sku of skus) {
+      //   paymentPage += `sku=${sku}&`;
+      // }
+      // Removing the extra '&' character at the end
+      paymentPage = paymentPage.slice(0, -1);
+      // const paymentPage = `${getConfig().ECOMMERCE_BASE_URL}/basket/add/?sku=${sku}`;
       window.location.href = paymentPage;
-      localStorage.removeItem('sku');
+      localStorage.removeItem('skus');
     } else {
       this.props.fetchBasket();
       sendPageEvent();

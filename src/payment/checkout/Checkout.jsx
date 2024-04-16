@@ -47,6 +47,14 @@ class Checkout extends React.Component {
     );
 
     this.props.submitPayment({ method: 'paypal' });
+
+    const { products } = this.props;
+    const skus = [];
+
+    for (const product of products){
+      skus.push(product.sku)
+    }
+    localStorage.setItem('skus', JSON.stringify(skus));
   };
 
   // eslint-disable-next-line react/no-unused-class-component-methods
