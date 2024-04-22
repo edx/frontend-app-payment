@@ -33,7 +33,7 @@ const messages = defineMessages({
   },
   'payment.form.errors.dynamic_payment_methods_not_compatible.country': {
     id: 'payment.form.errors.dynamic_payment_methods_not_compatible.country',
-    defaultMessage: 'Country not available with selected payment method',
+    defaultMessage: 'Payment method not available for selected country',
     description: 'Notifies the user their billing country is not compatible with the Dynamic Payment Method selected.',
   },
 });
