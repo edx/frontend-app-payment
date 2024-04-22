@@ -118,7 +118,7 @@ class PaymentPage extends React.Component {
     }
 
     // If this is a redirect from Stripe Dynamic Payment Methods, show loading icon until getPaymentStatus is done.
-    if (isPaymentRedirect && (paymentStatus !== 'requires_payment_method' || paymentStatus !== 'canceled')) {
+    if (isPaymentRedirect && paymentStatus === null) {
       return (
         <PageLoading
           srMessage={this.props.intl.formatMessage(messages['payment.loading.payment'])}
