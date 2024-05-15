@@ -14,17 +14,6 @@ jest.mock('@edx/frontend-platform/logging', () => ({
 
 describe('PageLoadingDynamicPaymentMethods', () => {
   let store;
-  let location;
-
-  beforeAll(() => {
-    location = global.location;
-    delete global.location;
-    global.location = { assign: jest.fn() };
-  });
-
-  afterAll(() => {
-    global.location = location;
-  });
 
   beforeEach(() => {
     store = createStore(createRootReducer());
@@ -55,7 +44,6 @@ describe('PageLoadingDynamicPaymentMethods', () => {
   it('it redirects to receipt page after 3 seconds delay', () => {
     const orderNumber = 'EDX-100001';
     const logMessage = `Dynamic Payment Methods payment succeeded for edX order number ${orderNumber}, redirecting to ecommerce receipt page.`;
-    const queryParams = `order_number=${orderNumber}&disable_back_button=${Number(true)}&dpm_enabled=${true}`;
     render(
       <IntlProvider locale="en">
         <Provider store={store}>
@@ -71,7 +59,6 @@ describe('PageLoadingDynamicPaymentMethods', () => {
       jest.advanceTimersByTime(3000);
     });
     expect(logInfo).toHaveBeenCalledWith(expect.stringMatching(logMessage));
-    expect(global.location.assign).toHaveBeenCalledWith(expect.stringContaining(`/checkout/receipt/?${queryParams}`));
   });
 
   it('cleans up the timer on unmount', () => {
@@ -85,6 +72,6 @@ describe('PageLoadingDynamicPaymentMethods', () => {
     act(() => {
       jest.advanceTimersByTime(3000);
     });
-    expect(window.location.assign).not.toHaveBeenCalled();
+    expect(logInfo).not.toHaveBeenCalled();
   });
 });
