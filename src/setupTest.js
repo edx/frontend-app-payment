@@ -18,3 +18,20 @@ mergeConfig({
   APPLE_PAY_MERCHANT_CAPABILITIES: process.env.APPLE_PAY_MERCHANT_CAPABILITIES && process.env.APPLE_PAY_MERCHANT_CAPABILITIES.split(','),
   WAFFLE_FLAGS: {},
 });
+
+const localStorageMock = jest.fn(() => {
+  let store = {};
+  return {
+    getItem: (key) => (store[key] || null),
+    setItem: (key, value) => {
+      store[key] = value.toString();
+    },
+    clear: () => {
+      store = {};
+    },
+    removeItem: (key) => {
+      delete store[key];
+    },
+  };
+})();
+Object.defineProperty(window, 'localStorage', { value: localStorageMock });
