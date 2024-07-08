@@ -172,11 +172,6 @@ class Checkout extends React.Component {
     const isBulkOrder = orderType === ORDER_TYPES.BULK_ENROLLMENT;
     const isQuantityUpdating = isBasketProcessing && loaded;
 
-    if (!submissionDisabled && isPaypalRedirect) {
-      // auto submit to paypal since the paypal redirect flag is set in the incoming request
-      this.handleSubmitPayPal();
-    }
-
     // Stripe element config
     // TODO: Move these to a better home
     const options = {
