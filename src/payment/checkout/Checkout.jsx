@@ -28,7 +28,18 @@ import { ORDER_TYPES } from '../data/constants';
 class Checkout extends React.Component {
   componentDidMount() {
     this.props.fetchClientSecret();
+    this.handleRedirectToPaypal();
   }
+
+  handleRedirectToPaypal = () => {
+    const { loading, isBasketProcessing, isPaypalRedirect } = this.props;
+    const submissionDisabled = loading || isBasketProcessing;
+
+    if (!submissionDisabled && isPaypalRedirect) {
+      // auto submit to paypal since the paypal redirect flag is set in the incoming request
+      this.handleSubmitPayPal();
+    }
+  };
 
   handleSubmitPayPal = () => {
     // TO DO: after event parity, track data should be
@@ -156,16 +167,10 @@ class Checkout extends React.Component {
       submitting,
       orderType,
       stripe,
-      isPaypalRedirect,
     } = this.props;
     const submissionDisabled = loading || isBasketProcessing;
     const isBulkOrder = orderType === ORDER_TYPES.BULK_ENROLLMENT;
     const isQuantityUpdating = isBasketProcessing && loaded;
-
-    if (!submissionDisabled && isPaypalRedirect) {
-      // auto submit to paypal since the paypal redirect flag is set in the incoming rquiest
-      this.handleSubmitPayPal();
-    }
 
     // Stripe element config
     // TODO: Move these to a better home
