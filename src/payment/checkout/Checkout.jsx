@@ -26,17 +26,24 @@ import { PayPalButton } from '../payment-methods/paypal';
 import { ORDER_TYPES } from '../data/constants';
 
 class Checkout extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      hasRedirectedToPaypal: false,
+    };
+  }
+
   componentDidMount() {
     this.props.fetchClientSecret();
-    this.handleRedirectToPaypal();
   }
 
   handleRedirectToPaypal = () => {
     const { loading, isBasketProcessing, isPaypalRedirect } = this.props;
+    const { hasRedirectedToPaypal } = this.state;
     const submissionDisabled = loading || isBasketProcessing;
 
-    if (!submissionDisabled && isPaypalRedirect) {
-      // auto submit to paypal since the paypal redirect flag is set in the incoming request
+    if (!submissionDisabled && isPaypalRedirect && !hasRedirectedToPaypal) {
+      this.setState({ hasRedirectedToPaypal: true });
       this.handleSubmitPayPal();
     }
   };
@@ -171,6 +178,8 @@ class Checkout extends React.Component {
     const submissionDisabled = loading || isBasketProcessing;
     const isBulkOrder = orderType === ORDER_TYPES.BULK_ENROLLMENT;
     const isQuantityUpdating = isBasketProcessing && loaded;
+
+    this.handleRedirectToPaypal();
 
     // Stripe element config
     // TODO: Move these to a better home
