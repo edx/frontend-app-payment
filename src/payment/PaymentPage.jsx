@@ -9,6 +9,7 @@ import {
   intlShape,
 } from '@edx/frontend-platform/i18n';
 import { AppContext } from '@edx/frontend-platform/react';
+import { getConfig } from '@edx/frontend-platform';
 import { sendPageEvent } from '@edx/frontend-platform/analytics';
 
 import messages from './PaymentPage.messages';
@@ -53,8 +54,24 @@ class PaymentPage extends React.Component {
   }
 
   componentDidMount() {
-    sendPageEvent();
-    this.props.fetchBasket();
+    const rawSkus = localStorage.getItem('skus');
+    const skus = JSON.parse(rawSkus);
+
+    // Check if SKU is not null
+    if (skus !== null) {
+      const baseURL = getConfig().ECOMMERCE_BASE_URL;
+      // Constructing the URL with the sku parameters
+      let ecommerceBasketURL = `${baseURL}/basket/add/?`;
+      // Appending each sku value to the URL
+      Object.values(skus).forEach(sku => { ecommerceBasketURL += `sku=${sku}&`; });
+      // Removing the extra '&' character at the end
+      ecommerceBasketURL = ecommerceBasketURL.slice(0, -1);
+      window.location.href = ecommerceBasketURL;
+      localStorage.removeItem('skus');
+    } else {
+      this.props.fetchBasket();
+      sendPageEvent();
+    }
   }
 
   componentDidUpdate(prevProps) {

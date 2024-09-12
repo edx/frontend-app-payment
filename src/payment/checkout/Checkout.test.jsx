@@ -103,6 +103,16 @@ describe('<Checkout />', () => {
       expect(store.getActions().pop()).toEqual(submitPayment({ method: 'paypal' }));
     });
 
+    it('should call submitPayment and store skus in localStorage when handleSubmitPayPal is called', async () => {
+      const paypalButton = await screen.findByTestId('PayPalButton');
+      fireEvent.click(paypalButton);
+
+      expect(store.getActions().pop()).toEqual(submitPayment({ method: 'paypal' }));
+      // Check if skus are stored in localStorage
+      const storedSkus = JSON.parse(localStorage.getItem('skus'));
+      expect(storedSkus.length).toBeGreaterThan(0);
+    });
+
     // Apple Pay temporarily disabled per REV-927 - https://github.com/openedx/frontend-app-payment/pull/256
 
     it('submits and tracks the payment form', () => {

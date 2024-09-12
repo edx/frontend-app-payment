@@ -35,7 +35,8 @@ const basket = (state = basketInitialState, action = null) => {
         loaded: true,
       };
 
-      case BASKET_DATA_RECEIVED: return { ...state, ...action.payload };
+      case BASKET_DATA_RECEIVED:
+        return { ...state, ...action.payload };
 
       case BASKET_PROCESSING: return {
         ...state,
