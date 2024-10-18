@@ -16,7 +16,11 @@ import {
   paymentSelector,
   updateClientSecretSelector,
 } from '../data/selectors';
-import { fetchClientSecret, submitPayment } from '../data/actions';
+import {
+  fetchClientSecret,
+  submitPayment,
+  trackPaymentButtonClick,
+} from '../data/actions';
 import AcceptedCardLogos from './assets/accepted-card-logos.png';
 
 import PaymentForm from './payment-form/PaymentForm';
@@ -63,6 +67,9 @@ class Checkout extends React.Component {
     );
 
     this.props.submitPayment({ method: 'paypal' });
+
+    // Red Ventures Cohesion Tagular Event Tracking
+    this.props.trackPaymentButtonClick('PayPal');
   };
 
   // eslint-disable-next-line react/no-unused-class-component-methods
@@ -330,6 +337,7 @@ Checkout.propTypes = {
   loaded: PropTypes.bool,
   fetchClientSecret: PropTypes.func.isRequired,
   submitPayment: PropTypes.func.isRequired,
+  trackPaymentButtonClick: PropTypes.func.isRequired,
   isFreeBasket: PropTypes.bool,
   submitting: PropTypes.bool,
   isBasketProcessing: PropTypes.bool,
@@ -355,9 +363,15 @@ Checkout.defaultProps = {
   isPaypalRedirect: false,
 };
 
+const mapDispatchToProps = (dispatch) => ({
+  fetchClientSecret: () => dispatch(fetchClientSecret),
+  submitPayment: (data) => dispatch(submitPayment(data)),
+  trackPaymentButtonClick: (buttonName) => dispatch(trackPaymentButtonClick(buttonName)),
+});
+
 const mapStateToProps = (state) => ({
   ...paymentSelector(state),
   ...updateClientSecretSelector(state),
 });
 
-export default connect(mapStateToProps, { fetchClientSecret, submitPayment })(injectIntl(Checkout));
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(Checkout));
