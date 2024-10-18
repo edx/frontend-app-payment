@@ -1,6 +1,6 @@
 |Build Status| |Coveralls| |npm_version| |npm_downloads| |license|
 
-frontend-app-payment
+frontend-app-payment totally new
 ====================
 
 Please tag **@edx/revenue-squad** on any PRs or issues.  Thanks!
