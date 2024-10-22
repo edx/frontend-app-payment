@@ -1,7 +1,12 @@
-import React, { useCallback } from 'react';
+import React, {
+  useCallback, useEffect, useRef, useState,
+} from 'react';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Alert } from '@openedx/paragon';
 import { ALERT_TYPES, MESSAGE_TYPES } from './data/constants';
+import { trackElementIntersection } from '../payment/data/actions';
+import { ElementType, PaymentTitle, IS_FULLY_SHOWN_THRESHOLD_OR_MARGIN } from '../cohesion/constants';
 
 // Put in a message type, get an alert type.
 const severityMap = {
@@ -16,6 +21,54 @@ const AlertMessage = (props) => {
   const {
     id, messageType, userMessage, closeHandler, data,
   } = props;
+
+  const alertRef = useRef(null);
+  const dispatch = useDispatch();
+  const [hasBeenShown, setHasBeenShown] = useState({});
+
+  // RV promo banner tracking for successful coupon application
+  useEffect(() => {
+    const observerCallback = (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && messageType === 'success' && userMessage.includes('added to basket')) {
+          // Single call behavior
+          const elementId = entry.target?.id;
+          if (!hasBeenShown[elementId]) {
+            const tagularElement = {
+              title: PaymentTitle,
+              url: entry.target?.baseURI,
+              pageType: 'checkout',
+              elementType: ElementType.Button,
+              name: 'promotional-code',
+              text: 'Apply',
+            };
+            dispatch(trackElementIntersection(tagularElement));
+            setHasBeenShown(prevState => ({
+              ...prevState,
+              [elementId]: true,
+            }));
+          }
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, {
+      threshold: IS_FULLY_SHOWN_THRESHOLD_OR_MARGIN,
+    });
+
+    const currentElement = alertRef.current;
+
+    if (currentElement) {
+      observer.observe(currentElement);
+    }
+
+    return () => {
+      if (currentElement) {
+        observer.unobserve(currentElement);
+      }
+      observer.disconnect();
+    };
+  }, [messageType, userMessage, hasBeenShown, dispatch]);
 
   const statusAlertProps = {
     variant: ALERT_TYPES.WARNING,
@@ -43,9 +96,11 @@ const AlertMessage = (props) => {
   }
 
   return (
-    <Alert {...statusAlertProps} dismissible>
-      {statusAlertProps.dialog}
-    </Alert>
+    <div ref={alertRef} id={userMessage}>
+      <Alert {...statusAlertProps} dismissible>
+        {statusAlertProps.dialog}
+      </Alert>
+    </div>
   );
 };
 
