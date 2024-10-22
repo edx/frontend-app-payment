@@ -13,6 +13,7 @@ import {
   fetchCaptureKey,
   fetchClientSecret,
   TRACK_PAYMENT_BUTTON_CLICK,
+  TRACK_ELEMENT_INTERSECTION,
 } from './actions';
 
 import { DEFAULT_STATUS } from '../checkout/payment-form/flex-microform/constants';
@@ -118,6 +119,7 @@ const clientSecret = (state = clientSecretInitialState, action = null) => {
 
 const pageTrackingInitialState = {
   paymentButtonClicks: [],
+  elementIntersections: [],
 };
 
 const pageTracking = (state = pageTrackingInitialState, action = null) => {
@@ -128,7 +130,11 @@ const pageTracking = (state = pageTrackingInitialState, action = null) => {
           ...state,
           paymentButtonClicks: [...state.paymentButtonClicks, action.payload],
         };
-
+      case TRACK_ELEMENT_INTERSECTION:
+        return {
+          ...state,
+          elementIntersections: [...state.elementIntersections, action.payload],
+        };
       default:
     }
   }

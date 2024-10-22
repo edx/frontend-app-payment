@@ -1,6 +1,6 @@
 import { createRoutine } from 'redux-saga-routines';
-import EventMap from '../../cohesion/constants';
-import tagularEvent from '../../cohesion/helpers';
+import { EventMap } from '../../cohesion/constants';
+import { tagularEvent } from '../../cohesion/helpers';
 
 // Routines are action + action creator pairs in a series.
 // Actions adhere to the flux standard action format.
@@ -79,22 +79,26 @@ export const clientSecretDataReceived = clientSecret => ({
 
 export const TRACK_PAYMENT_BUTTON_CLICK = 'TRACK_PAYMENT_BUTTON_CLICK';
 
-export const trackPaymentButtonClick = buttonName => {
-  const payload = {
-    text: buttonName,
-    name: buttonName.toLowerCase(),
-    title: 'Payment | edX',
-    url: 'https://payment.edx.org',
-    pageType: 'checkout',
-    elementType: 'BUTTON',
-  };
-
+export const trackPaymentButtonClick = tagularElement => {
   // Ideally this would happen in a middleware saga for separation of concerns
   // but due to deadlines/payment MFE will go away, adding a call here
-  tagularEvent(EventMap.ElementClicked, payload);
+  tagularEvent(EventMap.ElementClicked, tagularElement);
 
   return {
     type: TRACK_PAYMENT_BUTTON_CLICK,
-    payload,
+    payload: tagularElement,
+  };
+};
+
+export const TRACK_ELEMENT_INTERSECTION = 'TRACK_ELEMENT_INTERSECTION';
+
+export const trackElementIntersection = tagularElement => {
+  // Ideally this would happen in a middleware saga for separation of concerns
+  // but due to deadlines/payment MFE will go away, adding a call here
+  tagularEvent(EventMap.ElementViewed, tagularElement);
+
+  return {
+    type: TRACK_ELEMENT_INTERSECTION,
+    payload: tagularElement,
   };
 };

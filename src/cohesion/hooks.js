@@ -1,27 +1,19 @@
 import {
   useCallback,
   useEffect,
-  useRef,
   useState,
 } from 'react';
-
-export const IS_FULLY_SHOWN_THRESHOLD_OR_MARGIN = 1.0;
-export const IS_SINGLE_PX_SHOWN_THRESHOLD_OR_MARGIN = 0.0;
-export const DOCUMENT_ROOT_NODE = null;
-
-const defaultOptions = {
-  threshold: IS_FULLY_SHOWN_THRESHOLD_OR_MARGIN,
-  root: DOCUMENT_ROOT_NODE,
-};
+import {
+  defaultOptions,
+} from './constants';
 
 /**
 Hook to track if an element is intersecting with a root (null represents <html>).
+@param ref The ref element being tracked.
 @param callback The callback to be invoked when an item intersects.
 @param options The options for IntersectionObserver.
  */
-export const useIntersectionObserver = (callback, options = defaultOptions) => {
-  const ref = useRef(null);
-
+export const useIntersectionObserver = (ref, callback, options = defaultOptions) => {
   useEffect(() => {
     if (!ref.current) { return; }
     const refCurrent = ref.current;
@@ -44,7 +36,7 @@ export const useIntersectionObserver = (callback, options = defaultOptions) => {
         observer.unobserve(refCurrent);
       }
     };
-  }, [callback, options]);
+  }, [ref, callback, options]);
 
   return ref;
 };
