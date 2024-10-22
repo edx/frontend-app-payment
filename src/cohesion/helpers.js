@@ -1,4 +1,4 @@
-import EventMap from './constants';
+import { EventMap } from './constants';
 
 /**
  * Submit ('beam') an event via Tagular to Make
