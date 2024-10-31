@@ -5,178 +5,202 @@ exports[`AlertList should be null by default 1`] = `<div />`;
 exports[`AlertList should render messages of each type 1`] = `
 <div>
   <div
-    class="fade alert-content alert alert-warning show"
-    dialog="Boo indeed!"
-    role="alert"
+    id="Boo indeed!"
   >
     <div
-      class="pgn__alert-message-wrapper"
+      class="fade alert-content alert alert-warning show"
+      dialog="Boo indeed!"
+      role="alert"
     >
       <div
-        class="alert-message-content"
+        class="pgn__alert-message-wrapper"
       >
-        Boo indeed!
-      </div>
-      <div
-        class="pgn__alert-actions pgn__action-row"
-      >
-        <span
-          class="pgn__action-row-spacer"
-        />
-        <button
-          class="btn btn-tertiary btn-sm"
-          type="button"
+        <div
+          class="alert-message-content"
         >
-          Dismiss
-        </button>
+          Boo indeed!
+        </div>
+        <div
+          class="pgn__alert-actions pgn__action-row"
+        >
+          <span
+            class="pgn__action-row-spacer"
+          />
+          <button
+            class="btn btn-tertiary btn-sm"
+            type="button"
+          >
+            Dismiss
+          </button>
+        </div>
       </div>
     </div>
   </div>
   <div
-    class="fade alert-content alert alert-info show"
-    dialog="Bah!"
-    role="alert"
+    id="Bah!"
   >
     <div
-      class="pgn__alert-message-wrapper"
+      class="fade alert-content alert alert-info show"
+      dialog="Bah!"
+      role="alert"
     >
       <div
-        class="alert-message-content"
+        class="pgn__alert-message-wrapper"
       >
-        Bah!
-      </div>
-      <div
-        class="pgn__alert-actions pgn__action-row"
-      >
-        <span
-          class="pgn__action-row-spacer"
-        />
-        <button
-          class="btn btn-tertiary btn-sm"
-          type="button"
+        <div
+          class="alert-message-content"
         >
-          Dismiss
-        </button>
+          Bah!
+        </div>
+        <div
+          class="pgn__alert-actions pgn__action-row"
+        >
+          <span
+            class="pgn__action-row-spacer"
+          />
+          <button
+            class="btn btn-tertiary btn-sm"
+            type="button"
+          >
+            Dismiss
+          </button>
+        </div>
       </div>
     </div>
   </div>
   <div
-    class="fade alert-content alert alert-success show"
-    dialog="Meh!"
-    role="alert"
+    id="Meh!"
   >
     <div
-      class="pgn__alert-message-wrapper"
+      class="fade alert-content alert alert-success show"
+      dialog="Meh!"
+      role="alert"
     >
       <div
-        class="alert-message-content"
+        class="pgn__alert-message-wrapper"
       >
-        Meh!
-      </div>
-      <div
-        class="pgn__alert-actions pgn__action-row"
-      >
-        <span
-          class="pgn__action-row-spacer"
-        />
-        <button
-          class="btn btn-tertiary btn-sm"
-          type="button"
+        <div
+          class="alert-message-content"
         >
-          Dismiss
-        </button>
+          Meh!
+        </div>
+        <div
+          class="pgn__alert-actions pgn__action-row"
+        >
+          <span
+            class="pgn__action-row-spacer"
+          />
+          <button
+            class="btn btn-tertiary btn-sm"
+            type="button"
+          >
+            Dismiss
+          </button>
+        </div>
       </div>
     </div>
   </div>
   <div
-    class="fade alert-content alert alert-danger show"
-    dialog="Gah!  An error!"
-    role="alert"
+    id="Gah!  An error!"
   >
     <div
-      class="pgn__alert-message-wrapper"
+      class="fade alert-content alert alert-danger show"
+      dialog="Gah!  An error!"
+      role="alert"
     >
       <div
-        class="alert-message-content"
+        class="pgn__alert-message-wrapper"
       >
-        Gah!  An error!
-      </div>
-      <div
-        class="pgn__alert-actions pgn__action-row"
-      >
-        <span
-          class="pgn__action-row-spacer"
-        />
-        <button
-          class="btn btn-tertiary btn-sm"
-          type="button"
+        <div
+          class="alert-message-content"
         >
-          Dismiss
-        </button>
+          Gah!  An error!
+        </div>
+        <div
+          class="pgn__alert-actions pgn__action-row"
+        >
+          <span
+            class="pgn__action-row-spacer"
+          />
+          <button
+            class="btn btn-tertiary btn-sm"
+            type="button"
+          >
+            Dismiss
+          </button>
+        </div>
       </div>
     </div>
   </div>
   <div
-    class="fade alert-content alert alert-warning show"
-    dialog="Debug debug"
-    role="alert"
+    id="Debug debug"
   >
     <div
-      class="pgn__alert-message-wrapper"
+      class="fade alert-content alert alert-warning show"
+      dialog="Debug debug"
+      role="alert"
     >
       <div
-        class="alert-message-content"
+        class="pgn__alert-message-wrapper"
       >
-        Debug debug
-      </div>
-      <div
-        class="pgn__alert-actions pgn__action-row"
-      >
-        <span
-          class="pgn__action-row-spacer"
-        />
-        <button
-          class="btn btn-tertiary btn-sm"
-          type="button"
+        <div
+          class="alert-message-content"
         >
-          Dismiss
-        </button>
+          Debug debug
+        </div>
+        <div
+          class="pgn__alert-actions pgn__action-row"
+        >
+          <span
+            class="pgn__action-row-spacer"
+          />
+          <button
+            class="btn btn-tertiary btn-sm"
+            type="button"
+          >
+            Dismiss
+          </button>
+        </div>
       </div>
     </div>
   </div>
   <div
-    class="fade alert-content alert alert-danger show"
-    dialog="[object Object]"
-    role="alert"
+    id="[object Object]"
   >
     <div
-      class="pgn__alert-message-wrapper"
+      class="fade alert-content alert alert-danger show"
+      dialog="[object Object]"
+      role="alert"
     >
       <div
-        class="alert-message-content"
+        class="pgn__alert-message-wrapper"
       >
-        There was an unexpected problem. If the problem persists, please 
-        <a
-          class="pgn__hyperlink default-link standalone-link"
-          href="http://localhost:18000/support"
-          target="_self"
+        <div
+          class="alert-message-content"
         >
-          contact support
-        </a>
-        .
-      </div>
-      <div
-        class="pgn__alert-actions pgn__action-row"
-      >
-        <span
-          class="pgn__action-row-spacer"
-        />
-        <button
-          class="btn btn-tertiary btn-sm"
-          type="button"
+          There was an unexpected problem. If the problem persists, please 
+          <a
+            class="pgn__hyperlink default-link standalone-link"
+            href="http://localhost:18000/support"
+            target="_self"
+          >
+            contact support
+          </a>
+          .
+        </div>
+        <div
+          class="pgn__alert-actions pgn__action-row"
         >
-          Dismiss
-        </button>
+          <span
+            class="pgn__action-row-spacer"
+          />
+          <button
+            class="btn btn-tertiary btn-sm"
+            type="button"
+          >
+            Dismiss
+          </button>
+        </div>
       </div>
     </div>
   </div>

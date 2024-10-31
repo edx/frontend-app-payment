@@ -19,6 +19,10 @@ Object {
     "clientSecretId": "",
     "isClientSecretProcessing": false,
   },
+  "pageTracking": Object {
+    "elementIntersections": Array [],
+    "paymentButtonClicks": Array [],
+  },
 }
 `;
 
@@ -41,6 +45,10 @@ Object {
     "clientSecretId": "",
     "isClientSecretProcessing": false,
   },
+  "pageTracking": Object {
+    "elementIntersections": Array [],
+    "paymentButtonClicks": Array [],
+  },
 }
 `;
 
@@ -62,6 +70,10 @@ Object {
   "clientSecret": Object {
     "clientSecretId": "",
     "isClientSecretProcessing": false,
+  },
+  "pageTracking": Object {
+    "elementIntersections": Array [],
+    "paymentButtonClicks": Array [],
   },
 }
 `;
