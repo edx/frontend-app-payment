@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`OrderDetails should render the button by default 1`] = `
+exports[`PayPalButton should render the button by default 1`] = `
 <div>
   <button
     type="button"
@@ -13,7 +13,7 @@ exports[`OrderDetails should render the button by default 1`] = `
 </div>
 `;
 
-exports[`OrderDetails should render the button with a spinner when processing 1`] = `
+exports[`PayPalButton should render the button with a spinner when processing 1`] = `
 <div>
   <button
     type="button"
