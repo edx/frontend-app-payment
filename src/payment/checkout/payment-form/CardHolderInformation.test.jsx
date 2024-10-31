@@ -16,6 +16,7 @@ import createRootReducer from '../../../data/reducers';
 import { getCountryStatesMap, isPostalCodeRequired } from './utils/form-validators';
 
 import '../../__factories__/userAccount.factory';
+import '../../../mockIntersectionObserver';
 
 jest.mock('@edx/frontend-platform/analytics', () => ({
   sendTrackEvent: jest.fn(),

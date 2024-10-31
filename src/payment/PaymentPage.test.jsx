@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 /* eslint-disable react/jsx-no-constructed-context-values */
 /* eslint-disable global-require */
 import React from 'react';
@@ -21,6 +22,8 @@ import { fetchBasket, basketDataReceived } from './data/actions';
 import { transformResults } from './data/utils';
 import { ENROLLMENT_CODE_PRODUCT_TYPE } from './cart/order-details';
 import { MESSAGE_TYPES, addMessage } from '../feedback';
+
+import '../mockIntersectionObserver';
 
 jest.mock('universal-cookie', () => {
   class MockCookies {

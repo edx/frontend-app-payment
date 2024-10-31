@@ -14,6 +14,8 @@ import '../__factories__/userAccount.factory';
 import { transformResults } from '../data/utils';
 import { getPerformanceProperties } from '../performanceEventing';
 
+import '../../mockIntersectionObserver';
+
 const validateRequiredFieldsMock = jest.spyOn(formValidators, 'validateRequiredFields');
 const validateCardDetailsMock = jest.spyOn(formValidators, 'validateCardDetails');
 
