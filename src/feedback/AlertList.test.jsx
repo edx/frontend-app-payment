@@ -13,6 +13,27 @@ jest.mock('@edx/frontend-platform/logging', () => ({
   logError: jest.fn(),
 }));
 
+// Mock IntersectionObserver
+global.IntersectionObserver = class {
+  constructor(callback) {
+    this.callback = callback;
+    this.observedElements = new Set();
+  }
+
+  observe(element) {
+    this.callback([{ isIntersecting: true }]);
+    this.observedElements.add(element);
+  }
+
+  unobserve(element) {
+    this.observedElements.delete(element);
+  }
+
+  disconnect() {
+    this.observedElements.clear();
+  }
+};
+
 describe('AlertList', () => {
   let store;
 

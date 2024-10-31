@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 /* eslint-disable react/jsx-no-constructed-context-values */
 /* eslint-disable global-require */
 import React from 'react';
@@ -79,6 +80,27 @@ configureI18n({
 });
 
 const authenticatedUser = Factory.build('userAccount');
+
+// Mock IntersectionObserver
+global.IntersectionObserver = class {
+  constructor(callback) {
+    this.callback = callback;
+    this.observedElements = new Set();
+  }
+
+  observe(element) {
+    this.callback([{ isIntersecting: true }]);
+    this.observedElements.add(element);
+  }
+
+  unobserve(element) {
+    this.observedElements.delete(element);
+  }
+
+  disconnect() {
+    this.observedElements.clear();
+  }
+};
 
 describe('<PaymentPage />', () => {
   let store;
