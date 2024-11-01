@@ -1,5 +1,5 @@
 import React, {
-  useCallback, useEffect, useRef, useState,
+  useCallback, useEffect, useRef,
 } from 'react';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -24,30 +24,21 @@ const AlertMessage = (props) => {
 
   const alertRef = useRef(null);
   const dispatch = useDispatch();
-  const [hasBeenShown, setHasBeenShown] = useState({});
 
   // RV promo banner tracking for successful coupon application
   useEffect(() => {
     const observerCallback = (entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting && messageType === 'success' && userMessage.includes('added to basket')) {
-          // Single call behavior
-          const elementId = entry.target?.id;
-          if (!hasBeenShown[elementId]) {
-            const tagularElement = {
-              title: PaymentTitle,
-              url: entry.target?.baseURI,
-              pageType: 'checkout',
-              elementType: ElementType.Button,
-              name: 'promotional-code',
-              text: 'Apply',
-            };
-            dispatch(trackElementIntersection(tagularElement));
-            setHasBeenShown(prevState => ({
-              ...prevState,
-              [elementId]: true,
-            }));
-          }
+          const tagularElement = {
+            title: PaymentTitle,
+            url: entry.target?.baseURI,
+            pageType: 'checkout',
+            elementType: ElementType.Button,
+            name: 'promotional-code',
+            text: 'Apply',
+          };
+          dispatch(trackElementIntersection(tagularElement));
         }
       });
     };
@@ -68,7 +59,7 @@ const AlertMessage = (props) => {
       }
       observer.disconnect();
     };
-  }, [messageType, userMessage, hasBeenShown, dispatch]);
+  }, [messageType, userMessage, dispatch]);
 
   const statusAlertProps = {
     variant: ALERT_TYPES.WARNING,
