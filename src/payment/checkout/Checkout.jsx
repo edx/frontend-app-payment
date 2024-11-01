@@ -43,10 +43,7 @@ class Checkout extends React.Component {
   constructor(props) {
     super(props);
     this.paypalButtonRef = React.createRef();
-    this.paypalButtonClicked = false;
-    this.placeOrderButtonClicked = false;
     this.observer = null;
-    this.hasBeenShown = {};
     this.state = {
       hasRedirectedToPaypal: false,
     };
@@ -92,21 +89,16 @@ class Checkout extends React.Component {
 
   handleIntersectionObserver = (entry) => {
     const elementId = entry.target?.id;
-
-    // Single call behavior
-    if (!this.hasBeenShown[elementId]) {
-      const tagularElement = {
-        title: PaymentTitle,
-        url: window.location.href,
-        pageType: 'checkout',
-        elementType: ElementType.Button,
-        position: elementId,
-        name: ElementType.Button,
-        ...(elementId === 'PayPalButton' ? { text: 'PayPal' } : {}),
-      };
-      this.props.trackElementIntersection(tagularElement);
-      this.hasBeenShown[elementId] = true;
-    }
+    const tagularElement = {
+      title: PaymentTitle,
+      url: window.location.href,
+      pageType: 'checkout',
+      elementType: ElementType.Button,
+      position: elementId,
+      ...(elementId === 'PayPalButton' ? { name: 'paypal' } : {}),
+      ...(elementId === 'PayPalButton' ? { text: 'PayPal' } : {}),
+    };
+    this.props.trackElementIntersection(tagularElement);
   };
 
   handleRedirectToPaypal = () => {
@@ -136,19 +128,16 @@ class Checkout extends React.Component {
     );
 
     // Red Ventures Cohesion Tagular Event Tracking for PayPal
-    if (!this.paypalButtonClicked) {
-      this.paypalButtonClicked = true;
-      const tagularElement = {
-        title: PaymentTitle,
-        url: window.location.href,
-        pageType: 'checkout',
-        elementType: ElementType.Button,
-        text: paymentMethod,
-        name: paymentMethod.toLowerCase(),
-      };
+    const tagularElement = {
+      title: PaymentTitle,
+      url: window.location.href,
+      pageType: 'checkout',
+      elementType: ElementType.Button,
+      text: paymentMethod,
+      name: paymentMethod.toLowerCase(),
+    };
 
-      this.props.trackPaymentButtonClick(tagularElement);
-    }
+    this.props.trackPaymentButtonClick(tagularElement);
 
     this.props.submitPayment({ method: paymentMethod.toLowerCase() });
   };
@@ -206,9 +195,6 @@ class Checkout extends React.Component {
       productList: this.getProductList(),
     };
 
-    if (!this.placeOrderButtonClicked) {
-      this.placeOrderButtonClicked = true;
-    }
     this.props.submitPayment({ method: 'stripe', tagularElement, ...formData });
   };
 
