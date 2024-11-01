@@ -2,7 +2,7 @@ import { EventMap } from './constants';
 
 /**
  * Submit ('beam') an event via Tagular to Make
-* @param eventName Schema Name of the Event
+ * @param eventName Schema Name of the Event
  * @param eventData The data required by the schema
  */
 export const tagularEvent = (eventName, eventData) => {
@@ -30,4 +30,20 @@ export function pageTrackingObject(pageType) {
     pageType,
     referrer: window.document.referrer,
   };
+}
+
+/**
+ * Make Near Slugs from Plain Strings for ease of eventing.
+ * @example
+ *   "Computer Science" => "computer-science"
+ *   "Humanities & Arts" => "humanities-&-arts"
+ *   "Someone added a space " => "someone-added-a-space"
+ *
+ * @param x Input String
+ */
+export function hyphenateForTagular(x) {
+  return x
+    .trim()
+    .toLowerCase()
+    .replace(/[^\w&]/g, '-');
 }
