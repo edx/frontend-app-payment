@@ -1,6 +1,6 @@
 import { createRoutine } from 'redux-saga-routines';
 import { EventMap } from '../../cohesion/constants';
-import { tagularEvent } from '../../cohesion/helpers';
+import { getCorrelationID, tagularEvent } from '../../cohesion/helpers';
 
 // Routines are action + action creator pairs in a series.
 // Actions adhere to the flux standard action format.
@@ -82,11 +82,17 @@ export const TRACK_PAYMENT_BUTTON_CLICK = 'TRACK_PAYMENT_BUTTON_CLICK';
 export const trackPaymentButtonClick = tagularElement => {
   // Ideally this would happen in a middleware saga for separation of concerns
   // but due to deadlines/payment MFE will go away, adding a call here
-  tagularEvent(EventMap.ElementClicked, tagularElement);
+  const conversionEvent = {
+    correlation: {
+      id: getCorrelationID(),
+    },
+    metadata: tagularElement,
+  };
+  tagularEvent(EventMap.ElementClicked, conversionEvent);
 
   return {
     type: TRACK_PAYMENT_BUTTON_CLICK,
-    payload: tagularElement,
+    payload: conversionEvent,
   };
 };
 
@@ -94,11 +100,18 @@ export const TRACK_ELEMENT_INTERSECTION = 'TRACK_ELEMENT_INTERSECTION';
 
 export const trackElementIntersection = tagularElement => {
   // Ideally this would happen in a middleware saga for separation of concerns
-  // but due to deadlines/payment MFE will go away, adding a call here
-  tagularEvent(EventMap.ElementViewed, tagularElement);
+  // but due to deadlines/payment MFE will go away, adding a call here.
+  // Note: For the coupon code banner, we're using an elementViewed as a click event
+  // ('BUTTON' on coupon Apply click, but it's when the banner is viewed),
+  // so only add the correlation ID if this is a viewed from the coupon application click
+  const viewedEvent = {
+    ...(tagularElement.name === 'promotional-code' ? { correlation: { id: getCorrelationID() } } : null),
+    metadata: tagularElement,
+  };
+  tagularEvent(EventMap.ElementViewed, viewedEvent);
 
   return {
     type: TRACK_ELEMENT_INTERSECTION,
-    payload: tagularElement,
+    payload: viewedEvent,
   };
 };
