@@ -15,6 +15,7 @@ export const EventMap = {
   FieldSelected: 'redventures.usertracking.v3.FieldSelected',
   FormSubmitted: 'redventures.usertracking.v3.FormSubmitted',
   FormViewed: 'redventures.usertracking.v3.FormViewed',
+  ConversionTracked: 'core.conversions.ConversionTracked.v2',
 };
 
 export const IS_FULLY_SHOWN_THRESHOLD_OR_MARGIN = 1.0;

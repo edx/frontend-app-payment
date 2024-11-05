@@ -51,15 +51,6 @@ export const tagularEvent = (eventName, eventData) => {
   }
 };
 
-export function pageTrackingObject(pageType) {
-  return {
-    title: window.document.title,
-    url: window.location.href,
-    pageType,
-    referrer: window.document.referrer,
-  };
-}
-
 /**
  * Make Near Slugs from Plain Strings for ease of eventing.
  * @example

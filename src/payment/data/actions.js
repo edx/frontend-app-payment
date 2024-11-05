@@ -1,5 +1,4 @@
 import { createRoutine } from 'redux-saga-routines';
-import { EventMap } from '../../cohesion/constants';
 import { getCorrelationID, tagularEvent } from '../../cohesion/helpers';
 
 // Routines are action + action creator pairs in a series.
@@ -88,7 +87,7 @@ export const trackPaymentButtonClick = tagularElement => {
     },
     metadata: tagularElement,
   };
-  tagularEvent(EventMap.ElementClicked, conversionEvent);
+  tagularEvent('ConversionTracked', conversionEvent);
 
   return {
     type: TRACK_PAYMENT_BUTTON_CLICK,
@@ -106,9 +105,9 @@ export const trackElementIntersection = tagularElement => {
   // so only add the correlation ID if this is a viewed from the coupon application click
   const viewedEvent = {
     ...(tagularElement.name === 'promotional-code' ? { correlation: { id: getCorrelationID() } } : null),
-    metadata: tagularElement,
+    webElement: tagularElement,
   };
-  tagularEvent(EventMap.ElementViewed, viewedEvent);
+  tagularEvent('ElementViewed', viewedEvent);
 
   return {
     type: TRACK_ELEMENT_INTERSECTION,
