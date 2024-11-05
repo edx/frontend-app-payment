@@ -9,16 +9,12 @@ import {
   intlShape,
 } from '@edx/frontend-platform/i18n';
 import { sendTrackEvent } from '@edx/frontend-platform/analytics';
-import PayPalLogo from '../payment-methods/paypal/assets/paypal-logo.png';
 import {
-  DOCUMENT_ROOT_NODE,
-  IS_FULLY_SHOWN_THRESHOLD_OR_MARGIN,
   ElementType,
   PaymentTitle,
 } from '../../cohesion/constants';
 
 import messages from './Checkout.messages';
-import messagesPayPal from '../payment-methods/paypal/PayPalButton.messages';
 import {
   basketSelector,
   paymentSelector,
@@ -27,7 +23,6 @@ import {
 import {
   fetchClientSecret,
   submitPayment,
-  trackElementIntersection,
   trackPaymentButtonClick,
 } from '../data/actions';
 import AcceptedCardLogos from './assets/accepted-card-logos.png';
@@ -35,6 +30,7 @@ import AcceptedCardLogos from './assets/accepted-card-logos.png';
 import PaymentForm from './payment-form/PaymentForm';
 import StripePaymentForm from './payment-form/StripePaymentForm';
 import FreeCheckoutOrderButton from './FreeCheckoutOrderButton';
+import { PayPalButton } from '../payment-methods/paypal';
 import { ORDER_TYPES } from '../data/constants';
 import { hyphenateForTagular } from '../../cohesion/helpers';
 import { BaseTagularVariant } from '../../cohesion/dataTranslationMatrices';
@@ -42,8 +38,6 @@ import { BaseTagularVariant } from '../../cohesion/dataTranslationMatrices';
 class Checkout extends React.Component {
   constructor(props) {
     super(props);
-    this.paypalButtonRef = React.createRef();
-    this.observer = null;
     this.state = {
       hasRedirectedToPaypal: false,
     };
@@ -51,55 +45,7 @@ class Checkout extends React.Component {
 
   componentDidMount() {
     this.props.fetchClientSecret();
-    this.setupObservers();
   }
-
-  componentWillUnmount() {
-    this.cleanupObservers();
-  }
-
-  setupObservers = () => {
-    const options = {
-      threshold: IS_FULLY_SHOWN_THRESHOLD_OR_MARGIN,
-      root: DOCUMENT_ROOT_NODE,
-    };
-
-    this.observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          this.handleIntersectionObserver(entry);
-        }
-      });
-    }, options);
-
-    // Observe each entry
-    if (this.paypalButtonRef.current) {
-      this.observer.observe(this.paypalButtonRef.current);
-    }
-    // TODO: PlaceOrderButton only comes into view after the Stripe credit card form is rendered.
-    // Need to add this observe on componentDidUptate plus cleanup.
-  };
-
-  cleanupObservers = () => {
-    if (this.observer) {
-      this.observer.unobserve(this.paypalButtonRef.current);
-      this.observer.disconnect();
-    }
-  };
-
-  handleIntersectionObserver = (entry) => {
-    const elementId = entry.target?.id;
-    const tagularElement = {
-      title: PaymentTitle,
-      url: window.location.href,
-      pageType: 'checkout',
-      elementType: ElementType.Button,
-      position: elementId,
-      ...(elementId === 'PayPalButton' ? { name: 'paypal' } : {}),
-      ...(elementId === 'PayPalButton' ? { text: 'PayPal' } : {}),
-    };
-    this.props.trackElementIntersection(tagularElement);
-  };
 
   handleRedirectToPaypal = () => {
     const { loading, isBasketProcessing, isPaypalRedirect } = this.props;
@@ -375,25 +321,14 @@ class Checkout extends React.Component {
                 alt={intl.formatMessage(messages['payment.page.method.type.credit'])}
               />
             </button>
-
-            {/* Rendering the PayPal button directly instead of using the PayPalButton functional component due
-            to issues with passing in the element ref (forwardRef on functional component) */}
-            <button
-              type="button"
-              ref={this.paypalButtonRef}
+            <PayPalButton
               onClick={this.handleSubmitPayPal}
               className={classNames('payment-method-button', { 'skeleton-pulse': loading })}
               disabled={submissionDisabled}
+              isProcessing={payPalIsSubmitting}
               data-testid="PayPalButton"
               id="PayPalButton"
-            >
-              { payPalIsSubmitting ? <span className="button-spinner-icon text-primary mr-2" /> : null }
-              <img
-                src={PayPalLogo}
-                alt={intl.formatMessage(messagesPayPal['payment.type.paypal'])}
-              />
-            </button>
-
+            />
             {/* Apple Pay temporarily disabled per REV-927  - https://github.com/openedx/frontend-app-payment/pull/256 */}
           </p>
         </div>
@@ -452,7 +387,6 @@ Checkout.propTypes = {
   fetchClientSecret: PropTypes.func.isRequired,
   submitPayment: PropTypes.func.isRequired,
   trackPaymentButtonClick: PropTypes.func.isRequired,
-  trackElementIntersection: PropTypes.func.isRequired,
   isFreeBasket: PropTypes.bool,
   submitting: PropTypes.bool,
   isBasketProcessing: PropTypes.bool,
@@ -487,7 +421,6 @@ const mapDispatchToProps = (dispatch) => ({
   fetchClientSecret: () => dispatch(fetchClientSecret()),
   submitPayment: (data) => dispatch(submitPayment(data)),
   trackPaymentButtonClick: (metadata) => dispatch(trackPaymentButtonClick(metadata)),
-  trackElementIntersection: (entry) => dispatch(trackElementIntersection(entry)),
 });
 
 const mapStateToProps = (state) => ({
