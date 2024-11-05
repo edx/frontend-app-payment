@@ -7,7 +7,7 @@ const cohesionConfig = {
   domainLabelWithExtension: 'edx.org',
   postTypeGql: '',
   homepageGql: '',
-  siteUrl: 'https://www.edx.org',
+  siteUrl: process.env.MARKETING_SITE_BASE_URL,
   cmsUrl: process.env.NEXT_PUBLIC_WORDPRESS_URL || '',
   cmsUser: process.env.WP_USER || '',
   cmsPwd: process.env.WP_PWD || '',
