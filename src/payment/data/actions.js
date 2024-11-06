@@ -80,18 +80,30 @@ export const TRACK_PAYMENT_BUTTON_CLICK = 'TRACK_PAYMENT_BUTTON_CLICK';
 
 export const trackPaymentButtonClick = tagularElement => {
   // Ideally this would happen in a middleware saga for separation of concerns
-  // but due to deadlines/payment MFE will go away, adding a call here
-  const conversionEvent = {
-    correlation: {
-      id: getCorrelationID(),
-    },
-    metadata: tagularElement,
-  };
-  tagularEvent('ConversionTracked', conversionEvent);
+  // but due to deadlines/payment MFE will go away, adding a call here.
+  // Note: Click events on the PayPal button and Place Order button differ in the type of event data it's treated as.
+  let payload;
+  if (tagularElement.name === 'paypal') {
+    payload = {
+      correlation: {
+        id: getCorrelationID(),
+      },
+      webElement: tagularElement,
+    };
+    tagularEvent('ElementClicked', payload);
+  } else {
+    payload = {
+      correlation: {
+        id: getCorrelationID(),
+      },
+      metadata: tagularElement,
+    };
+    tagularEvent('ConversionTracked', payload);
+  }
 
   return {
     type: TRACK_PAYMENT_BUTTON_CLICK,
-    payload: conversionEvent,
+    payload,
   };
 };
 
@@ -101,10 +113,11 @@ export const trackElementIntersection = tagularElement => {
   // Ideally this would happen in a middleware saga for separation of concerns
   // but due to deadlines/payment MFE will go away, adding a call here.
   // Note: For the coupon code banner, we're using an elementViewed as a click event
-  // ('BUTTON' on coupon Apply click, but it's when the banner is viewed),
-  // so only add the correlation ID if this is a viewed from the coupon application click
+  // ('BUTTON' on coupon Apply click, but it's when the banner is viewed).
   const viewedEvent = {
-    ...(tagularElement.name === 'promotional-code' ? { correlation: { id: getCorrelationID() } } : null),
+    correlation: {
+      id: getCorrelationID(),
+    },
     webElement: tagularElement,
   };
   tagularEvent('ElementViewed', viewedEvent);

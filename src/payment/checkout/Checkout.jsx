@@ -136,7 +136,6 @@ class Checkout extends React.Component {
       title: PaymentTitle,
       url: window.location.href,
       pageType: 'checkout',
-      elementType: ElementType.Button,
       timestamp: Date.now(),
       productList: this.getProductList(),
     };
@@ -170,7 +169,7 @@ class Checkout extends React.Component {
     if (products || products.length !== 0) {
       products.forEach(product => {
         productList.push({
-          variant: BaseTagularVariant.Courses,
+          variant: BaseTagularVariant.Courses, // TODO: all are 'courses' now, use translateVariant() in the future
           brand: this.getPartnerName(product), // School or Partner name
           name: product.title, // Course(s) title
         });

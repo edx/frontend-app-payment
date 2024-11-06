@@ -33,9 +33,14 @@ jest.mock('universal-cookie', () => {
         code: 'MXN',
         rate: 19.092733,
       },
+      tglr_correlation_id: '123a845-3872-5729-1379ab439',
     };
 
     get(cookieName) {
+      return MockCookies.result[cookieName];
+    }
+
+    set(cookieName) {
       return MockCookies.result[cookieName];
     }
   }
