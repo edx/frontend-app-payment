@@ -31,6 +31,7 @@ config.plugins.forEach((plugin) => {
     }
 
     plugin.userOptions.preconnect = preconnectDomains;
+    plugin.userOptions.cohesionConfig = cohesionConfig;
     plugin.options.cohesionConfig = cohesionConfig;
   }
 });
