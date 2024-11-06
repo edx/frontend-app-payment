@@ -20,10 +20,10 @@
     <% } %>
 
     <% /* NOTE: Adding Red Ventures related cohesion/tagular code for the launch of the new marketing website. */ %>
-    <% if (htmlWebpackPlugin.options.cohesionConfig) { %>
+    <% if (htmlWebpackPlugin?.options?.cohesionConfig) { %>
     <script>
-      {`!function(co,h,e,s,i,o,n){var d='documentElement';var a='className';h[d][a]+=' preampjs';
-      n.k=e;co._Cohesion=n;co._Preamp={k:s,start:new Date};co._Fuse={k:i};co._Tagular={k:o};
+      !function(co,h,e,s,i,o,n){console.log('Cohesion script running'); var d='documentElement';var a='className';h[d][a]+=' preampjs';
+      n.k=e;co._Cohesion=n;co._Preamp={k:s,start:new Date};co._Fuse={k:i};co._Tagular={k:o}; co.tagular = o;
       [e,s,i,o].map(function(x){co[x]=co[x]||function(){(co[x].q=co[x].q||[]).push([].slice.call(arguments))}});
       var b=function(){var u=h[d][a];h[d][a]=u.replace(/ ?preampjs/g,'')};
       h.addEventListener('DOMContentLoaded',function(){co.setTimeout(b,3e3);
@@ -34,15 +34,15 @@
       (window,document,'cohesion','preamp','fuse','tagular',{
           tagular: {
               apiHost: 'https://beam.edx.org/v2/t',
-              writeKey: '<%= htmlWebpackPlugin.options.cohesionConfig.tagularWriteKey %>',
-              sourceKey: '<%= htmlWebpackPlugin.options.cohesionConfig.tagularSourceKey %>',
-              cookieDomain: '<%= htmlWebpackPlugin.options.cohesionConfig.tagularCookieDomain %>',
-              domainWhitelist: <%= htmlWebpackPlugin.options.cohesionConfig.tagularDomainWhitelist %>,
+              writeKey: '<%= htmlWebpackPlugin?.options?.cohesionConfig?.tagularWriteKey %>',
+              sourceKey: '<%= htmlWebpackPlugin?.options?.cohesionConfig?.tagularSourceKey %>',
+              cookieDomain: '<%= htmlWebpackPlugin?.options?.cohesionConfig?.tagularCookieDomain %>',
+              domainWhitelist: `<%= htmlWebpackPlugin?.options?.cohesionConfig?.tagularDomainWhitelist %>`,
               apiVersion: 'v2/t',
               multiparty: true,
               taggy: { enabled: true },
           }
-      })`}
+      })
     </script>
     <% } %>
   </head>

@@ -29,7 +29,7 @@ const AlertMessage = (props) => {
   useEffect(() => {
     const observerCallback = (entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting && messageType === 'success' && userMessage.includes('added to basket')) {
+        if (entry.isIntersecting && entry.target?.innerText.includes('added to basket')) {
           const tagularElement = {
             title: PaymentTitle,
             url: entry.target?.baseURI,
