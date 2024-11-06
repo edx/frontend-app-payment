@@ -12,6 +12,8 @@ import {
   submitPayment,
   fetchCaptureKey,
   fetchClientSecret,
+  TRACK_PAYMENT_BUTTON_CLICK,
+  TRACK_ELEMENT_INTERSECTION,
 } from './actions';
 
 import { DEFAULT_STATUS } from '../checkout/payment-form/flex-microform/constants';
@@ -115,10 +117,35 @@ const clientSecret = (state = clientSecretInitialState, action = null) => {
   return state;
 };
 
+const pageTrackingInitialState = {
+  paymentButtonClicks: [],
+  elementIntersections: [],
+};
+
+const pageTracking = (state = pageTrackingInitialState, action = null) => {
+  if (action !== null) {
+    switch (action.type) {
+      case TRACK_PAYMENT_BUTTON_CLICK:
+        return {
+          ...state,
+          paymentButtonClicks: [...state.paymentButtonClicks, action.payload],
+        };
+      case TRACK_ELEMENT_INTERSECTION:
+        return {
+          ...state,
+          elementIntersections: [...state.elementIntersections, action.payload],
+        };
+      default:
+    }
+  }
+  return state;
+};
+
 const reducer = combineReducers({
   basket,
   captureKey,
   clientSecret,
+  pageTracking,
 });
 
 export default reducer;

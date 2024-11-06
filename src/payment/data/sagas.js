@@ -23,6 +23,7 @@ import {
   fetchCaptureKey,
   clientSecretProcessing,
   fetchClientSecret,
+  trackPaymentButtonClick,
 } from './actions';
 
 import { STATUS_LOADING } from '../checkout/payment-form/flex-microform/constants';
@@ -226,7 +227,7 @@ export function* handleSubmitPayment({ payload }) {
     return;
   }
 
-  const { method, ...paymentArgs } = payload;
+  const { method, tagularElement, ...paymentArgs } = payload;
   try {
     yield put(basketProcessing(true));
     yield put(clearMessages()); // Don't leave messages floating on the page after clicking submit
@@ -235,6 +236,15 @@ export function* handleSubmitPayment({ payload }) {
     const basket = yield select(state => ({ ...state.payment.basket }));
     yield call(paymentMethodCheckout, basket, paymentArgs);
     yield put(submitPayment.success());
+    // RV tracking for successful Stripe Payment
+    if (method === 'stripe') {
+      // Metada for conversion_category and conversion_action:
+      // Sucessful payment = 'Order' and 'Completed'
+      // Failed payment = 'Enrollment' and 'Declined'
+      tagularElement.conversion_category = 'Order';
+      tagularElement.conversion_action = 'Completed';
+      yield put(trackPaymentButtonClick(tagularElement));
+    }
   } catch (error) {
     // Do not handle errors on user aborted actions
     if (!error.aborted) {
@@ -243,6 +253,12 @@ export function* handleSubmitPayment({ payload }) {
       if (error.code) {
         yield call(handleErrors, { messages: [error] }, true);
       } else {
+        // RV tracking for failed Stripe Payment
+        if (method === 'stripe') {
+          tagularElement.conversion_category = 'Enrollment';
+          tagularElement.conversion_action = 'Declined';
+          yield put(trackPaymentButtonClick(tagularElement));
+        }
         yield call(handleErrors, error, true);
         yield call(handleReduxFormValidationErrors, error);
       }

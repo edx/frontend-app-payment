@@ -3,30 +3,34 @@
 exports[`AlertMessage should default its severity when necessary 1`] = `
 <div>
   <div
-    class="fade alert-content alert alert-warning show"
-    dialog="Wondrous message!"
-    role="alert"
+    id="Wondrous message!"
   >
     <div
-      class="pgn__alert-message-wrapper"
+      class="fade alert-content alert alert-warning show"
+      dialog="Wondrous message!"
+      role="alert"
     >
       <div
-        class="alert-message-content"
+        class="pgn__alert-message-wrapper"
       >
-        Wondrous message!
-      </div>
-      <div
-        class="pgn__alert-actions pgn__action-row"
-      >
-        <span
-          class="pgn__action-row-spacer"
-        />
-        <button
-          class="btn btn-tertiary btn-sm"
-          type="button"
+        <div
+          class="alert-message-content"
         >
-          Dismiss
-        </button>
+          Wondrous message!
+        </div>
+        <div
+          class="pgn__alert-actions pgn__action-row"
+        >
+          <span
+            class="pgn__action-row-spacer"
+          />
+          <button
+            class="btn btn-tertiary btn-sm"
+            type="button"
+          >
+            Dismiss
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -36,34 +40,38 @@ exports[`AlertMessage should default its severity when necessary 1`] = `
 exports[`AlertMessage should render a userMessage element 1`] = `
 <div>
   <div
-    class="fade alert-content alert alert-warning show"
-    dialog="[object Object]"
-    role="alert"
+    id="[object Object]"
   >
     <div
-      class="pgn__alert-message-wrapper"
+      class="fade alert-content alert alert-warning show"
+      dialog="[object Object]"
+      role="alert"
     >
       <div
-        class="alert-message-content"
+        class="pgn__alert-message-wrapper"
       >
-        <span
-          values="[object Object]"
+        <div
+          class="alert-message-content"
         >
-          Wondrous message!
-        </span>
-      </div>
-      <div
-        class="pgn__alert-actions pgn__action-row"
-      >
-        <span
-          class="pgn__action-row-spacer"
-        />
-        <button
-          class="btn btn-tertiary btn-sm"
-          type="button"
+          <span
+            values="[object Object]"
+          >
+            Wondrous message!
+          </span>
+        </div>
+        <div
+          class="pgn__alert-actions pgn__action-row"
         >
-          Dismiss
-        </button>
+          <span
+            class="pgn__action-row-spacer"
+          />
+          <button
+            class="btn btn-tertiary btn-sm"
+            type="button"
+          >
+            Dismiss
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -72,31 +80,33 @@ exports[`AlertMessage should render a userMessage element 1`] = `
 
 exports[`AlertMessage should render a userMessage function 1`] = `
 <div>
-  <div
-    class="fade alert-content alert alert-warning show"
-    dialog="[object Object]"
-    role="alert"
-  >
+  <div>
     <div
-      class="pgn__alert-message-wrapper"
+      class="fade alert-content alert alert-warning show"
+      dialog="[object Object]"
+      role="alert"
     >
       <div
-        class="alert-message-content"
+        class="pgn__alert-message-wrapper"
       >
-        Wondrous message!
-      </div>
-      <div
-        class="pgn__alert-actions pgn__action-row"
-      >
-        <span
-          class="pgn__action-row-spacer"
-        />
-        <button
-          class="btn btn-tertiary btn-sm"
-          type="button"
+        <div
+          class="alert-message-content"
         >
-          Dismiss
-        </button>
+          Wondrous message!
+        </div>
+        <div
+          class="pgn__alert-actions pgn__action-row"
+        >
+          <span
+            class="pgn__action-row-spacer"
+          />
+          <button
+            class="btn btn-tertiary btn-sm"
+            type="button"
+          >
+            Dismiss
+          </button>
+        </div>
       </div>
     </div>
   </div>

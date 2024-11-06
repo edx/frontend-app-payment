@@ -1,4 +1,5 @@
 import { createRoutine } from 'redux-saga-routines';
+import { getCorrelationID, tagularEvent } from '../../cohesion/helpers';
 
 // Routines are action + action creator pairs in a series.
 // Actions adhere to the flux standard action format.
@@ -74,3 +75,55 @@ export const clientSecretDataReceived = clientSecret => ({
   type: CLIENT_SECRET_DATA_RECEIVED,
   payload: clientSecret,
 });
+
+export const TRACK_PAYMENT_BUTTON_CLICK = 'TRACK_PAYMENT_BUTTON_CLICK';
+
+export const trackPaymentButtonClick = tagularElement => {
+  // Ideally this would happen in a middleware saga for separation of concerns
+  // but due to deadlines/payment MFE will go away, adding a call here.
+  // Note: Click events on the PayPal button and Place Order button differ in the type of event data it's treated as.
+  let payload;
+  if (tagularElement.name === 'paypal') {
+    payload = {
+      correlation: {
+        id: getCorrelationID(),
+      },
+      webElement: tagularElement,
+    };
+    tagularEvent('ElementClicked', payload);
+  } else {
+    payload = {
+      correlation: {
+        id: getCorrelationID(),
+      },
+      metadata: tagularElement,
+    };
+    tagularEvent('ConversionTracked', payload);
+  }
+
+  return {
+    type: TRACK_PAYMENT_BUTTON_CLICK,
+    payload,
+  };
+};
+
+export const TRACK_ELEMENT_INTERSECTION = 'TRACK_ELEMENT_INTERSECTION';
+
+export const trackElementIntersection = tagularElement => {
+  // Ideally this would happen in a middleware saga for separation of concerns
+  // but due to deadlines/payment MFE will go away, adding a call here.
+  // Note: For the coupon code banner, we're using an elementViewed as a click event
+  // ('BUTTON' on coupon Apply click, but it's when the banner is viewed).
+  const viewedEvent = {
+    correlation: {
+      id: getCorrelationID(),
+    },
+    webElement: tagularElement,
+  };
+  tagularEvent('ElementViewed', viewedEvent);
+
+  return {
+    type: TRACK_ELEMENT_INTERSECTION,
+    payload: viewedEvent,
+  };
+};

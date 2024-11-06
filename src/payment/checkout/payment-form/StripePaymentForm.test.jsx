@@ -16,6 +16,8 @@ import '../../__factories__/userAccount.factory';
 import * as mocks from '../stripeMocks';
 import { basketSelector } from '../../data/selectors';
 
+import '../../../mockIntersectionObserver';
+
 jest.mock('@edx/frontend-platform/analytics', () => ({
   sendTrackEvent: jest.fn(),
 }));

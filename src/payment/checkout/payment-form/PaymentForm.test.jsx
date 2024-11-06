@@ -12,7 +12,9 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import PaymentForm from './PaymentForm';
 import * as formValidators from './utils/form-validators';
 import createRootReducer from '../../../data/reducers';
+
 import '../../__factories__/userAccount.factory';
+import '../../../mockIntersectionObserver';
 
 jest.mock('@edx/frontend-platform/analytics', () => ({
   sendTrackEvent: jest.fn(),

@@ -9,6 +9,10 @@ import {
   intlShape,
 } from '@edx/frontend-platform/i18n';
 import { sendTrackEvent } from '@edx/frontend-platform/analytics';
+import {
+  ElementType,
+  PaymentTitle,
+} from '../../cohesion/constants';
 
 import messages from './Checkout.messages';
 import {
@@ -16,7 +20,11 @@ import {
   paymentSelector,
   updateClientSecretSelector,
 } from '../data/selectors';
-import { fetchClientSecret, submitPayment } from '../data/actions';
+import {
+  fetchClientSecret,
+  submitPayment,
+  trackPaymentButtonClick,
+} from '../data/actions';
 import AcceptedCardLogos from './assets/accepted-card-logos.png';
 
 import PaymentForm from './payment-form/PaymentForm';
@@ -24,6 +32,8 @@ import StripePaymentForm from './payment-form/StripePaymentForm';
 import FreeCheckoutOrderButton from './FreeCheckoutOrderButton';
 import { PayPalButton } from '../payment-methods/paypal';
 import { ORDER_TYPES } from '../data/constants';
+import { hyphenateForTagular } from '../../cohesion/helpers';
+import { BaseTagularVariant } from '../../cohesion/dataTranslationMatrices';
 
 class Checkout extends React.Component {
   constructor(props) {
@@ -49,6 +59,7 @@ class Checkout extends React.Component {
   };
 
   handleSubmitPayPal = () => {
+    const paymentMethod = 'PayPal';
     // TO DO: after event parity, track data should be
     // sent only if the payment is processed, not on click
     // Check for ApplePay and Free Basket as well
@@ -57,12 +68,24 @@ class Checkout extends React.Component {
       {
         type: 'click',
         category: 'checkout',
-        paymentMethod: 'PayPal',
+        paymentMethod,
         stripeEnabled: this.props.enableStripePaymentProcessor,
       },
     );
 
-    this.props.submitPayment({ method: 'paypal' });
+    // Red Ventures Cohesion Tagular Event Tracking for PayPal
+    const tagularElement = {
+      title: PaymentTitle,
+      url: window.location.href,
+      pageType: 'checkout',
+      elementType: ElementType.Button,
+      text: paymentMethod,
+      name: paymentMethod.toLowerCase(),
+    };
+
+    this.props.trackPaymentButtonClick(tagularElement);
+
+    this.props.submitPayment({ method: paymentMethod.toLowerCase() });
   };
 
   // eslint-disable-next-line react/no-unused-class-component-methods
@@ -108,7 +131,16 @@ class Checkout extends React.Component {
   };
 
   handleSubmitStripe = (formData) => {
-    this.props.submitPayment({ method: 'stripe', ...formData });
+    // Red Ventures Cohesion Tagular Event Tracking for Stripe
+    const tagularElement = {
+      title: PaymentTitle,
+      url: window.location.href,
+      pageType: 'checkout',
+      timestamp: Date.now(),
+      productList: this.getProductList(),
+    };
+
+    this.props.submitPayment({ method: 'stripe', tagularElement, ...formData });
   };
 
   handleSubmitStripeButtonClick = (stripeSelectedPaymentMethod) => {
@@ -129,6 +161,30 @@ class Checkout extends React.Component {
       'edx.bi.ecommerce.basket.free_checkout',
       { type: 'click', category: 'checkout', stripeEnabled: this.props.enableStripePaymentProcessor },
     );
+  };
+
+  getProductList = () => {
+    const { products } = this.props;
+    const productList = [];
+    if (products || products.length !== 0) {
+      products.forEach(product => {
+        productList.push({
+          variant: BaseTagularVariant.Courses, // TODO: all are 'courses' now, use translateVariant() in the future
+          brand: this.getPartnerName(product), // School or Partner name
+          name: product.title, // Course(s) title
+        });
+      });
+    }
+    return productList;
+  };
+
+  getPartnerName = (product) => {
+    // Assumes a Program/Bulk Purchase has the same Partner for all courses
+    try {
+      return hyphenateForTagular(product.courseKey?.split(':')[1].split('+')[0]);
+    } catch {
+      return '';
+    }
   };
 
   renderBillingFormSkeleton() {
@@ -264,15 +320,14 @@ class Checkout extends React.Component {
                 alt={intl.formatMessage(messages['payment.page.method.type.credit'])}
               />
             </button>
-
             <PayPalButton
               onClick={this.handleSubmitPayPal}
               className={classNames('payment-method-button', { 'skeleton-pulse': loading })}
               disabled={submissionDisabled}
               isProcessing={payPalIsSubmitting}
               data-testid="PayPalButton"
+              id="PayPalButton"
             />
-
             {/* Apple Pay temporarily disabled per REV-927  - https://github.com/openedx/frontend-app-payment/pull/256 */}
           </p>
         </div>
@@ -330,6 +385,7 @@ Checkout.propTypes = {
   loaded: PropTypes.bool,
   fetchClientSecret: PropTypes.func.isRequired,
   submitPayment: PropTypes.func.isRequired,
+  trackPaymentButtonClick: PropTypes.func.isRequired,
   isFreeBasket: PropTypes.bool,
   submitting: PropTypes.bool,
   isBasketProcessing: PropTypes.bool,
@@ -339,6 +395,10 @@ Checkout.propTypes = {
   stripe: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   clientSecretId: PropTypes.string,
   isPaypalRedirect: PropTypes.bool,
+  products: PropTypes.arrayOf(PropTypes.shape({
+    courseKey: PropTypes.string,
+    title: PropTypes.string,
+  })),
 };
 
 Checkout.defaultProps = {
@@ -353,11 +413,18 @@ Checkout.defaultProps = {
   stripe: null,
   clientSecretId: null,
   isPaypalRedirect: false,
+  products: [],
 };
+
+const mapDispatchToProps = (dispatch) => ({
+  fetchClientSecret: () => dispatch(fetchClientSecret()),
+  submitPayment: (data) => dispatch(submitPayment(data)),
+  trackPaymentButtonClick: (metadata) => dispatch(trackPaymentButtonClick(metadata)),
+});
 
 const mapStateToProps = (state) => ({
   ...paymentSelector(state),
   ...updateClientSecretSelector(state),
 });
 
-export default connect(mapStateToProps, { fetchClientSecret, submitPayment })(injectIntl(Checkout));
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(Checkout));

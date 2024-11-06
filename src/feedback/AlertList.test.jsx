@@ -9,6 +9,8 @@ import createRootReducer from '../data/reducers';
 import { addMessage } from './data/actions';
 import { MESSAGE_TYPES } from './data/constants';
 
+import '../mockIntersectionObserver';
+
 jest.mock('@edx/frontend-platform/logging', () => ({
   logError: jest.fn(),
 }));

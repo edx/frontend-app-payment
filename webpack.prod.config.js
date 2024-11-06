@@ -10,6 +10,8 @@ const { getBaseConfig } = require('@openedx/frontend-build');
  */
 
 const config = getBaseConfig('webpack-prod');
+// eslint-disable-next-line import/extensions
+const cohesionConfig = require('./cohesion.config.js');
 
 /* eslint-disable no-param-reassign */
 config.plugins.forEach((plugin) => {
@@ -29,6 +31,8 @@ config.plugins.forEach((plugin) => {
     }
 
     plugin.userOptions.preconnect = preconnectDomains;
+    plugin.userOptions.cohesionConfig = cohesionConfig;
+    plugin.options.cohesionConfig = cohesionConfig;
   }
 });
 

@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 /* eslint-disable react/jsx-no-constructed-context-values */
 /* eslint-disable global-require */
 import React from 'react';
@@ -22,6 +23,8 @@ import { transformResults } from './data/utils';
 import { ENROLLMENT_CODE_PRODUCT_TYPE } from './cart/order-details';
 import { MESSAGE_TYPES, addMessage } from '../feedback';
 
+import '../mockIntersectionObserver';
+
 jest.mock('universal-cookie', () => {
   class MockCookies {
     static result = {
@@ -30,9 +33,14 @@ jest.mock('universal-cookie', () => {
         code: 'MXN',
         rate: 19.092733,
       },
+      tglr_correlation_id: '123a845-3872-5729-1379ab439',
     };
 
     get(cookieName) {
+      return MockCookies.result[cookieName];
+    }
+
+    set(cookieName) {
       return MockCookies.result[cookieName];
     }
   }

@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { injectIntl, FormattedMessage } from '@edx/frontend-platform/i18n';
 import { StatefulButton } from '@openedx/paragon';
+import { trackElementIntersection } from '../../data/actions';
+import { ElementType, PaymentTitle, IS_FULLY_SHOWN_THRESHOLD_OR_MARGIN } from '../../../cohesion/constants';
 
 const PlaceOrderButton = ({
   showLoadingButton, onSubmitButtonClick, stripeSelectedPaymentMethod, disabled, isProcessing,
@@ -12,9 +15,49 @@ const PlaceOrderButton = ({
   // istanbul ignore if
   if (isProcessing) { submitButtonState = 'processing'; }
 
+  const buttonRef = useRef(null);
+  const dispatch = useDispatch();
+
+  // RV event tracking for Place Order Button
+  useEffect(() => {
+    const observerCallback = (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const tagularElement = {
+            title: PaymentTitle,
+            url: window.location.href,
+            pageType: 'checkout',
+            elementType: ElementType.Button,
+            position: 'placeOrderButton',
+            name: 'stripe',
+            text: 'Stripe',
+          };
+          dispatch(trackElementIntersection(tagularElement));
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, {
+      threshold: IS_FULLY_SHOWN_THRESHOLD_OR_MARGIN,
+    });
+
+    const currentElement = buttonRef.current;
+
+    if (currentElement) {
+      observer.observe(currentElement);
+    }
+
+    return () => {
+      if (currentElement) {
+        observer.unobserve(currentElement);
+      }
+      observer.disconnect();
+    };
+  }, [dispatch]);
+
   return (
     <div className="col-lg-6 form-group float-right">
-      <div className="row justify-content-end mt-4">
+      <div className="row justify-content-end mt-4" ref={buttonRef}>
         {
         showLoadingButton ? (
           <div className="skeleton btn btn-block btn-lg">&nbsp;</div>
