@@ -128,7 +128,7 @@ class Checkout extends React.Component {
   handleSubmitStripe = (formData) => {
     // Red Ventures Cohesion Tagular Event Tracking for Stripe
     const tagularElement = {
-      timestamp: Date.now().toISOString(),
+      timestamp: new Date().toISOString(),
       productList: this.getProductList(),
     };
 
