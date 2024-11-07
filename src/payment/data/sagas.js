@@ -241,8 +241,8 @@ export function* handleSubmitPayment({ payload }) {
       // Metada for conversion_category and conversion_action:
       // Sucessful payment = 'Order' and 'Completed'
       // Failed payment = 'Enrollment' and 'Declined'
-      tagularElement.conversion_category = 'Order';
-      tagularElement.conversion_action = 'Completed';
+      tagularElement.category = 'Order';
+      tagularElement.action = 'Completed';
       yield put(trackPaymentButtonClick(tagularElement));
     }
   } catch (error) {
@@ -255,8 +255,8 @@ export function* handleSubmitPayment({ payload }) {
       } else {
         // RV tracking for failed Stripe Payment
         if (method === 'stripe') {
-          tagularElement.conversion_category = 'Enrollment';
-          tagularElement.conversion_action = 'Declined';
+          tagularElement.category = 'Enrollment';
+          tagularElement.action = 'Declined';
           yield put(trackPaymentButtonClick(tagularElement));
         }
         yield call(handleErrors, error, true);

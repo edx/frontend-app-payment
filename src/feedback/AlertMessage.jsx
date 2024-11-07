@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { Alert } from '@openedx/paragon';
 import { ALERT_TYPES, MESSAGE_TYPES } from './data/constants';
 import { trackElementIntersection } from '../payment/data/actions';
-import { ElementType, PaymentTitle, IS_FULLY_SHOWN_THRESHOLD_OR_MARGIN } from '../cohesion/constants';
+import { ElementType, IS_FULLY_SHOWN_THRESHOLD_OR_MARGIN } from '../cohesion/constants';
 
 // Put in a message type, get an alert type.
 const severityMap = {
@@ -31,9 +31,6 @@ const AlertMessage = (props) => {
       entries.forEach(entry => {
         if (entry.isIntersecting && entry.target?.innerText.includes('added to basket')) {
           const tagularElement = {
-            title: PaymentTitle,
-            url: entry.target?.baseURI,
-            pageType: 'checkout',
             elementType: ElementType.Button,
             name: 'promotional-code',
             text: 'Apply',

@@ -4,7 +4,10 @@ export const ElementType = {
   Button: 'BUTTON',
 };
 
-export const PaymentTitle = 'Payment | edX';
+export const PageData = {
+  PaymentTitle: 'Payment | edX',
+  PageType: 'checkout',
+};
 
 export const EventMap = {
   ProductClicked: 'redventures.ecommerce.v1.ProductClicked',
