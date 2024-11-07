@@ -9,10 +9,7 @@ import {
   intlShape,
 } from '@edx/frontend-platform/i18n';
 import { sendTrackEvent } from '@edx/frontend-platform/analytics';
-import {
-  ElementType,
-  PaymentTitle,
-} from '../../cohesion/constants';
+import { ElementType, PageData } from '../../cohesion/constants';
 
 import messages from './Checkout.messages';
 import {
@@ -45,6 +42,7 @@ class Checkout extends React.Component {
 
   componentDidMount() {
     this.props.fetchClientSecret();
+    window.chsn_pageType = PageData.PageType;
   }
 
   handleRedirectToPaypal = () => {
@@ -75,9 +73,9 @@ class Checkout extends React.Component {
 
     // Red Ventures Cohesion Tagular Event Tracking for PayPal
     const tagularElement = {
-      title: PaymentTitle,
+      title: PageData.PaymentTitle,
       url: window.location.href,
-      pageType: 'checkout',
+      pageType: PageData.PageType,
       elementType: ElementType.Button,
       text: paymentMethod,
       name: paymentMethod.toLowerCase(),
@@ -133,9 +131,9 @@ class Checkout extends React.Component {
   handleSubmitStripe = (formData) => {
     // Red Ventures Cohesion Tagular Event Tracking for Stripe
     const tagularElement = {
-      title: PaymentTitle,
+      title: PageData.PaymentTitle,
       url: window.location.href,
-      pageType: 'checkout',
+      pageType: PageData.PageType,
       timestamp: Date.now(),
       productList: this.getProductList(),
     };

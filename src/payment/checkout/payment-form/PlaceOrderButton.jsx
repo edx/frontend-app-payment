@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { injectIntl, FormattedMessage } from '@edx/frontend-platform/i18n';
 import { StatefulButton } from '@openedx/paragon';
 import { trackElementIntersection } from '../../data/actions';
-import { ElementType, PaymentTitle, IS_FULLY_SHOWN_THRESHOLD_OR_MARGIN } from '../../../cohesion/constants';
+import { ElementType, PageData, IS_FULLY_SHOWN_THRESHOLD_OR_MARGIN } from '../../../cohesion/constants';
 
 const PlaceOrderButton = ({
   showLoadingButton, onSubmitButtonClick, stripeSelectedPaymentMethod, disabled, isProcessing,
@@ -24,9 +24,9 @@ const PlaceOrderButton = ({
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           const tagularElement = {
-            title: PaymentTitle,
+            title: PageData.PaymentTitle,
             url: window.location.href,
-            pageType: 'checkout',
+            pageType: PageData.PageType,
             elementType: ElementType.Button,
             position: 'placeOrderButton',
             name: 'stripe',
