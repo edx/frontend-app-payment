@@ -115,9 +115,7 @@ export const trackElementIntersection = tagularElement => {
   // Note: For the coupon code banner, we're using an elementViewed as a click event
   // ('BUTTON' on coupon Apply click, but it's when the banner is viewed).
   const viewedEvent = {
-    correlation: {
-      id: getCorrelationID(),
-    },
+    correlationId: getCorrelationID(),
     webElement: tagularElement,
   };
   tagularEvent('ElementViewed', viewedEvent);

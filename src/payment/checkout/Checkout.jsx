@@ -73,9 +73,6 @@ class Checkout extends React.Component {
 
     // Red Ventures Cohesion Tagular Event Tracking for PayPal
     const tagularElement = {
-      title: PageData.PaymentTitle,
-      url: window.location.href,
-      pageType: PageData.PageType,
       elementType: ElementType.Button,
       text: paymentMethod,
       name: paymentMethod.toLowerCase(),
@@ -131,10 +128,7 @@ class Checkout extends React.Component {
   handleSubmitStripe = (formData) => {
     // Red Ventures Cohesion Tagular Event Tracking for Stripe
     const tagularElement = {
-      title: PageData.PaymentTitle,
-      url: window.location.href,
-      pageType: PageData.PageType,
-      timestamp: Date.now(),
+      timestamp: Date.now().toString(),
       productList: this.getProductList(),
     };
 
