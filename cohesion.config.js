@@ -22,8 +22,8 @@ const cohesionConfig = {
   defaultCategory: '',
   defaultSubject: '',
   tagularApiKey: '',
-  tagularSourceKey: 'src_2euJfAVNt6Z9kQz4e9t1SQBtm8x',
-  tagularWriteKey: 'wk_2euJfDkJVTtEVzsC8BPOb0g9dVj',
+  tagularSourceKey: process.env.COHESION_TAGULAR_SOURCE_KEY,
+  tagularWriteKey: process.env.COHESION_TAGULAR_WRITE_KEY,
   tagularCookieDomain: 'edx.org',
   tagularDomainWhitelist: JSON.stringify([
     'edx.org',
