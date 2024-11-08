@@ -81,13 +81,12 @@ export const TRACK_PAYMENT_BUTTON_CLICK = 'TRACK_PAYMENT_BUTTON_CLICK';
 export const trackPaymentButtonClick = tagularElement => {
   // Ideally this would happen in a middleware saga for separation of concerns
   // but due to deadlines/payment MFE will go away, adding a call here.
-  // Note: Click events on the PayPal button and Place Order button differ in the type of event data it's treated as.
+  // Note: Click events on the PayPal button and Place Order button differ in the type of event data,
+  // and correlation vs. correlationId sent.
   let payload;
   if (tagularElement.name === 'paypal') {
     payload = {
-      correlation: {
-        id: getCorrelationID(),
-      },
+      correlationId: getCorrelationID(),
       webElement: tagularElement,
     };
     tagularEvent('ElementClicked', payload);
