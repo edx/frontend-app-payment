@@ -239,9 +239,7 @@ export function* handleSubmitPayment({ payload }) {
     // RV tracking for successful Stripe Payment
     if (method === 'stripe') {
       // Metada for conversion_category and conversion_action:
-      // Sucessful payment = 'Order' and 'Completed'
-      // Failed payment = 'Enrollment' and 'Declined'
-      tagularElement.category = 'Order';
+      tagularElement.category = 'Enrollment';
       tagularElement.action = 'Completed';
       yield put(trackPaymentButtonClick(tagularElement));
     }
@@ -255,7 +253,7 @@ export function* handleSubmitPayment({ payload }) {
       } else {
         // RV tracking for failed Stripe Payment
         if (method === 'stripe') {
-          tagularElement.category = 'Enrollment';
+          tagularElement.category = 'Cart';
           tagularElement.action = 'Declined';
           yield put(trackPaymentButtonClick(tagularElement));
         }
