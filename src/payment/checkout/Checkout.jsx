@@ -161,9 +161,10 @@ class Checkout extends React.Component {
     if (products || products.length !== 0) {
       products.forEach(product => {
         productList.push({
+          externalId: String(product.courseKey || ''),
           variant: BaseTagularVariant.Courses, // TODO: all are 'courses' now, use translateVariant() in the future
           brand: this.getPartnerName(product), // School or Partner name
-          name: product.title, // Course(s) title
+          name: String(product.title || ''), // Course(s) title
         });
       });
     }
