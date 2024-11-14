@@ -20,7 +20,7 @@ const PayPalButton = ({ intl, isProcessing, ...props }) => {
           const elementId = entry.target?.id;
           const tagularElement = {
             elementType: ElementType.Button,
-            position: elementId,
+            position: String(elementId || ''),
             name: 'paypal',
             text: 'PayPal',
           };

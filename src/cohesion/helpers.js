@@ -9,6 +9,12 @@ export const getCorrelationID = () => {
   const COOKIE_NAME = 'tglr_correlation_id';
   const PARAM_NAME = 'correlationId';
 
+  function getDomain() {
+    const { hostname } = window.location;
+    const parts = hostname.split('.');
+    return parts.length > 2 ? parts.slice(-2).join('.') : hostname;
+  }
+
   function getQueryParameter(name) {
     const params = new URLSearchParams(window.location.search);
 
@@ -23,7 +29,7 @@ export const getCorrelationID = () => {
 
   const expirationDate = new Date();
   expirationDate.setMinutes(expirationDate.getMinutes() + 30); // 30 mins expiration from now
-  new Cookies().set(COOKIE_NAME, paramId, { expires: expirationDate });
+  new Cookies().set(COOKIE_NAME, paramId, { expires: expirationDate, domain: `.${getDomain()}` });
 
   return paramId;
 };
