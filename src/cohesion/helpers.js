@@ -27,9 +27,14 @@ export const getCorrelationID = () => {
     paramId = uuidv4();
   }
 
+  // If the tagular correlation ID cookie was set before we added the change to
+  // specify the domain, it was automatically added to the current domain.
+  // Always delete the cookie with the current domain
+  new Cookies().remove(COOKIE_NAME, { domain: window.location.hostname, path: '/' });
+
   const expirationDate = new Date();
   expirationDate.setMinutes(expirationDate.getMinutes() + 30); // 30 mins expiration from now
-  new Cookies().set(COOKIE_NAME, paramId, { expires: expirationDate, domain: `.${getDomain()}` });
+  new Cookies().set(COOKIE_NAME, paramId, { expires: expirationDate, domain: `.${getDomain()}`, path: '/' });
 
   return paramId;
 };
