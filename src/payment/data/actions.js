@@ -117,7 +117,7 @@ export const trackElementIntersection = tagularElement => {
     correlationId: getCorrelationID(),
     webElement: tagularElement,
   };
-  tagularEvent('ElementViewed', viewedEvent);
+  //tagularEvent('ElementViewed', viewedEvent);
 
   return {
     type: TRACK_ELEMENT_INTERSECTION,
