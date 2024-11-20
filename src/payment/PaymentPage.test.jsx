@@ -43,6 +43,10 @@ jest.mock('universal-cookie', () => {
     set(cookieName) {
       return MockCookies.result[cookieName];
     }
+
+    remove() {
+      return undefined;
+    }
   }
   return MockCookies;
 });

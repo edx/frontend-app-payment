@@ -12,7 +12,8 @@
         "GHSA-9wv6-86v2-598j",
         "GHSA-m6fv-jmcg-4jfg",
         "GHSA-cm22-4g7w-348p",
-        "GHSA-c7qv-q95q-8v27"
+        "GHSA-c7qv-q95q-8v27",
+        "GHSA-3xgq-45jj-v275"
     ],
     "moderate": true
 }
