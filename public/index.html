@@ -48,7 +48,7 @@
               optIn: true,
             },
             required: true,
-            domain: '<%= htmlWebpackPlugin?.options?.cohesionConfig?.tagularCookieDomain %>',
+            domain: '<%= "." + (htmlWebpackPlugin?.options?.cohesionConfig?.tagularCookieDomain || "") %>',
           },
       })
     </script>
