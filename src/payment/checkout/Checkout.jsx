@@ -161,7 +161,8 @@ class Checkout extends React.Component {
     if (products || products.length !== 0) {
       products.forEach(product => {
         productList.push({
-          externalId: String(product.courseKey || ''),
+          id: this.getCourseKey(product), // Course key
+          externalId: String(product.courseKey || ''), // Course run key
           variant: BaseTagularVariant.Courses, // TODO: all are 'courses' now, use translateVariant() in the future
           brand: this.getPartnerName(product), // School or Partner name
           name: String(product.title || ''), // Course(s) title
@@ -169,6 +170,17 @@ class Checkout extends React.Component {
       });
     }
     return productList;
+  };
+
+  getCourseKey = (product) => {
+    try {
+      // The courseKey from the product is actually the course run key,
+      // which is the same as the course.id from a stock record product in ecomm.
+      // ex: "course-v1:MITx+COMM101+1T2024"
+      return product.courseKey.split('+').slice(0, 2).join('+');
+    } catch {
+      return '';
+    }
   };
 
   getPartnerName = (product) => {
